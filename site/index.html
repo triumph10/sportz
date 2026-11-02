@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Hard Was That?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>How Hard Was That?</h1>
+    <p class="sub">See how little time the batter really had. Simulated T20 chase.</p>
+
+    <!-- Scoreboard -->
+    <section class="board">
+      <div class="team" id="team"></div>
+      <div class="score" id="score">0/0</div>
+      <div class="small" id="overs">Overs: 0.0</div>
+      <div class="small" id="need"></div>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls">
+      <button id="nextBtn">Next ball</button>
+      <button id="autoBtn">Auto-play</button>
+      <button id="resetBtn" class="light">Reset</button>
+    </section>
+    <div class="lang">
+      <button id="enBtn" class="on">English</button>
+      <button id="hiBtn">Hinglish</button>
+    </div>
+
+    <p id="error" class="error"></p>
+
+    <!-- Card (hidden until the first ball) -->
+    <section class="card" id="card" hidden>
+      <div class="tag" id="tag"></div>
+      <div class="headline" id="headline"></div>
+      <div class="detail" id="detail"></div>
+
+      <!-- Player strip (simulated numbers) -->
+      <div class="players">
+        <div class="player">
+          <div class="plabel">Batter</div>
+          <div class="pname" id="batterName"></div>
+          <div class="pstats" id="batterStats"></div>
+        </div>
+        <div class="player">
+          <div class="plabel">Bowler</div>
+          <div class="pname" id="bowlerName"></div>
+          <div class="pstats" id="bowlerStats"></div>
+        </div>
+      </div>
+
+      <div class="bars">
+        <div class="barlabel">Ball reaches the batter in <b id="tBall"></b></div>
+        <div class="track"><div class="bar ball" id="barBall"></div></div>
+        <div class="barlabel">An ordinary person needs <b id="tReact"></b> to react</div>
+        <div class="track"><div class="bar react" id="barReact"></div></div>
+      </div>
+
+      <div class="window" id="window"></div>
+      <p class="msg" id="msg"></p>
+
+      <!-- Before you judge: answers "why is he playing like that?" -->
+      <div class="judge">
+        <div class="plabel" id="judgeLabel">Before you judge</div>
+        <p id="judgeText"></p>
+      </div>
+
+      <p class="text" id="text"></p>
+
+      <!-- Try it yourself (reaction game) -->
+      <div class="game">
+        <div class="plabel">Try it yourself</div>
+        <button id="gameBtn">Start</button>
+        <p class="gameresult" id="gameResult"></p>
+      </div>
+
+      <!-- Field map: top-down view, bowler at the top, right-handed batter -->
+      <div class="fieldbox">
+        <div class="plabel">Where the shot went (simulated)</div>
+        <svg id="field" viewBox="0 0 200 200" role="img" aria-label="Top-down field map">
+          <path class="zone" data-zone="long off"   d="M100,100 L100,10 A90,90 0 0 1 163.64,36.36 Z"/>
+          <path class="zone" data-zone="cover"      d="M100,100 L163.64,36.36 A90,90 0 0 1 190,100 Z"/>
+          <path class="zone" data-zone="point"      d="M100,100 L190,100 A90,90 0 0 1 163.64,163.64 Z"/>
+          <path class="zone" data-zone="third man"  d="M100,100 L163.64,163.64 A90,90 0 0 1 100,190 Z"/>
+          <path class="zone" data-zone="fine leg"   d="M100,100 L100,190 A90,90 0 0 1 36.36,163.64 Z"/>
+          <path class="zone" data-zone="square leg" d="M100,100 L36.36,163.64 A90,90 0 0 1 10,100 Z"/>
+          <path class="zone" data-zone="midwicket"  d="M100,100 L10,100 A90,90 0 0 1 36.36,36.36 Z"/>
+          <path class="zone" data-zone="long on"    d="M100,100 L36.36,36.36 A90,90 0 0 1 100,10 Z"/>
+
+          <text class="zlabel" x="122" y="46"  text-anchor="middle">long off</text>
+          <text class="zlabel" x="154" y="78"  text-anchor="middle">cover</text>
+          <text class="zlabel" x="154" y="122" text-anchor="middle">point</text>
+          <text class="zlabel" x="122" y="154" text-anchor="middle">third man</text>
+          <text class="zlabel" x="78"  y="154" text-anchor="middle">fine leg</text>
+          <text class="zlabel" x="46"  y="122" text-anchor="middle">square leg</text>
+          <text class="zlabel" x="46"  y="78"  text-anchor="middle">midwicket</text>
+          <text class="zlabel" x="78"  y="46"  text-anchor="middle">long on</text>
+
+          <rect class="pitch" x="95" y="80" width="10" height="40" rx="2"/>
+          <circle class="batter" cx="100" cy="113" r="4"/>
+        </svg>
+        <div class="small" id="fieldNote"></div>
+      </div>
+
+      <div class="wp" id="wp"></div>
+    </section>
+
+    <!-- Win probability chart -->
+    <section class="chartbox">
+      <h2>Win probability</h2>
+      <canvas id="chart"></canvas>
+    </section>
+
+    <p class="footer">Simulated match. Timings are simple physics estimates.
+      Speed, length, shot direction and player numbers are made up.</p>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="match.js"></script>
+  <script src="commentary.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
