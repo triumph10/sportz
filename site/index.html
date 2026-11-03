@@ -1,126 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How Hard Was That?</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0b0a">
+<title>How much time to react? The clock a batter plays against</title>
+<meta name="description" content="Replay a T20 chase ball by ball and see how little time a batter actually has to decide.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <h1>How Hard Was That?</h1>
-    <p class="sub">See how little time the batter really had. Simulated T20 chase.</p>
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="#top">How much time to react?</a>
+  <nav><a href="#how">How it works</a><a href="#room">Match room</a></nav>
+  <div class="lang"><button id="enBtn" class="on">EN</button><button id="hiBtn">HI</button></div>
+</div></header>
 
-    <!-- Scoreboard -->
-    <section class="board">
-      <div class="team" id="team"></div>
-      <div class="score" id="score">0/0</div>
-      <div class="small" id="overs">Overs: 0.0</div>
-      <div class="small" id="need"></div>
-    </section>
+<main id="top">
+<section class="hero wrap">
+  <p class="eyebrow">A T20 run chase, told through 26 key deliveries</p>
+  <h1>You shouted at the batter.<br><em>Here is the clock he was playing against.</em></h1>
+  <p class="lead">A fast ball takes about half a second to reach the bat. A person needs roughly 0.2 s just to react. That leaves a few hundredths of a second to choose a shot. This site replays a chase so you can see that window on every delivery, then test yourself against it.</p>
+  <div class="cta"><button id="startBtn">Start the chase</button><a href="#how" class="ghost">How it works</a></div>
+  <p id="hook" class="hook"></p>
+</section>
 
-    <!-- Controls -->
-    <section class="controls">
-      <button id="nextBtn">Next ball</button>
-      <button id="autoBtn">Auto-play</button>
-      <button id="resetBtn" class="light">Reset</button>
-    </section>
-    <div class="lang">
-      <button id="enBtn" class="on">English</button>
-      <button id="hiBtn">Hinglish</button>
+<section id="how" class="wrap how">
+  <h2 class="sec">Three things you will see</h2>
+  <div class="cards3">
+    <article><span>01</span><h3>The window</h3><p>Flight time of the ball minus a 0.2 s reaction. What is left is the time to decide.</p></article>
+    <article><span>02</span><h3>The situation</h3><p>Runs needed, wickets left, win chance before and after the ball. Why the shot was forced.</p></article>
+    <article><span>03</span><h3>Your turn</h3><p>Beat the reaction test and ask the match assistant anything about the delivery.</p></article>
+  </div>
+</section>
+
+<section id="room" class="wrap room">
+  <div class="scorebar">
+    <div><div class="big" id="score">0/0</div><div class="ov" id="overs"></div></div>
+    <div class="need" id="need"></div>
+    <div class="chips">
+      <div class="chip"><span>Run rate</span><b id="crr">-</b></div>
+      <div class="chip" id="rrrChip"><span>Needed</span><b id="rrr">-</b></div>
+      <div class="chip"><span>Wkts left</span><b id="inhand">10</b></div>
     </div>
+  </div>
+  <div class="team" id="team"></div>
 
-    <p id="error" class="error"></p>
-
-    <!-- Card (hidden until the first ball) -->
-    <section class="card" id="card" hidden>
-      <div class="tag" id="tag"></div>
-      <div class="headline" id="headline"></div>
-      <div class="detail" id="detail"></div>
-
-      <!-- Player strip (simulated numbers) -->
-      <div class="players">
-        <div class="player">
-          <div class="plabel">Batter</div>
-          <div class="pname" id="batterName"></div>
-          <div class="pstats" id="batterStats"></div>
+  <div class="grid">
+    <div class="col">
+      <section class="panel ballcard">
+        <div class="cardhead"><span class="tag" id="tag"></span><span class="diff" id="diff"></span><div class="balls" id="overBalls"></div></div>
+        <h2 class="headline" id="headline"></h2>
+        <div class="detail" id="detail"></div>
+        <div class="players">
+          <div class="player"><div class="lbl">Batter</div><div class="pname" id="batterName"></div><div class="pstats" id="batterStats"></div></div>
+          <div class="player"><div class="lbl">Bowler</div><div class="pname" id="bowlerName"></div><div class="pstats" id="bowlerStats"></div></div>
         </div>
-        <div class="player">
-          <div class="plabel">Bowler</div>
-          <div class="pname" id="bowlerName"></div>
-          <div class="pstats" id="bowlerStats"></div>
-        </div>
-      </div>
+      </section>
 
-      <div class="bars">
-        <div class="barlabel">Ball reaches the batter in <b id="tBall"></b></div>
-        <div class="track"><div class="bar ball" id="barBall"></div></div>
-        <div class="barlabel">An ordinary person needs <b id="tReact"></b> to react</div>
-        <div class="track"><div class="bar react" id="barReact"></div></div>
-      </div>
+      <section class="panel clock">
+        <div class="lbl">Time to decide</div>
+        <div class="window" id="window"></div>
+        <div class="barlabel">Ball reaches the batter in <b id="tBall">-</b></div>
+        <div class="track"><div class="bar b" id="barBall"></div></div>
+        <div class="barlabel">Human reaction alone: <b id="tReact">-</b></div>
+        <div class="track"><div class="bar r" id="barReact"></div></div>
+        <p class="judge"><b id="judgeLabel"></b> <span id="judgeText"></span></p>
+      </section>
 
-      <div class="window" id="window"></div>
-      <p class="msg" id="msg"></p>
-
-      <!-- Before you judge: answers "why is he playing like that?" -->
-      <div class="judge">
-        <div class="plabel" id="judgeLabel">Before you judge</div>
-        <p id="judgeText"></p>
-      </div>
-
-      <p class="text" id="text"></p>
-
-      <!-- Try it yourself (reaction game) -->
-      <div class="game">
-        <div class="plabel">Try it yourself</div>
-        <button id="gameBtn">Start</button>
-        <p class="gameresult" id="gameResult"></p>
-      </div>
-
-      <!-- Field map: top-down view, bowler at the top, right-handed batter -->
-      <div class="fieldbox">
-        <div class="plabel">Where the shot went (simulated)</div>
+      <section class="panel">
+        <div class="lbl">Where the shot went</div>
         <svg id="field" viewBox="0 0 200 200" role="img" aria-label="Top-down field map">
-          <path class="zone" data-zone="long off"   d="M100,100 L100,10 A90,90 0 0 1 163.64,36.36 Z"/>
-          <path class="zone" data-zone="cover"      d="M100,100 L163.64,36.36 A90,90 0 0 1 190,100 Z"/>
-          <path class="zone" data-zone="point"      d="M100,100 L190,100 A90,90 0 0 1 163.64,163.64 Z"/>
-          <path class="zone" data-zone="third man"  d="M100,100 L163.64,163.64 A90,90 0 0 1 100,190 Z"/>
-          <path class="zone" data-zone="fine leg"   d="M100,100 L100,190 A90,90 0 0 1 36.36,163.64 Z"/>
-          <path class="zone" data-zone="square leg" d="M100,100 L36.36,163.64 A90,90 0 0 1 10,100 Z"/>
-          <path class="zone" data-zone="midwicket"  d="M100,100 L10,100 A90,90 0 0 1 36.36,36.36 Z"/>
-          <path class="zone" data-zone="long on"    d="M100,100 L36.36,36.36 A90,90 0 0 1 100,10 Z"/>
-
-          <text class="zlabel" x="122" y="46"  text-anchor="middle">long off</text>
-          <text class="zlabel" x="154" y="78"  text-anchor="middle">cover</text>
-          <text class="zlabel" x="154" y="122" text-anchor="middle">point</text>
-          <text class="zlabel" x="122" y="154" text-anchor="middle">third man</text>
-          <text class="zlabel" x="78"  y="154" text-anchor="middle">fine leg</text>
-          <text class="zlabel" x="46"  y="122" text-anchor="middle">square leg</text>
-          <text class="zlabel" x="46"  y="78"  text-anchor="middle">midwicket</text>
-          <text class="zlabel" x="78"  y="46"  text-anchor="middle">long on</text>
-
+          <circle class="ground" cx="100" cy="100" r="96"/><circle class="rope" cx="100" cy="100" r="90"/><circle class="ring" cx="100" cy="100" r="45"/>
+          <g id="zones"></g>
           <rect class="pitch" x="95" y="80" width="10" height="40" rx="2"/>
+          <circle class="bowlerdot" cx="100" cy="87" r="3"/>
+          <line class="shot hide" id="shotLine" x1="100" y1="113" x2="100" y2="113" pathLength="1"/>
+          <circle class="shotend hide" id="shotEnd" cx="100" cy="113" r="3.5"/>
           <circle class="batter" cx="100" cy="113" r="4"/>
         </svg>
         <div class="small" id="fieldNote"></div>
-      </div>
+      </section>
+    </div>
 
-      <div class="wp" id="wp"></div>
-    </section>
+    <div class="col">
+      <section class="panel chat">
+        <h2>Ask about this ball</h2>
+        <div class="msgs" id="msgs" aria-live="polite"></div>
+        <div class="sugg" id="sugg"></div>
+        <div class="ask"><input id="askIn" maxlength="140" placeholder="Type your question" aria-label="Question"><button id="askBtn">Send</button></div>
+      </section>
 
-    <!-- Win probability chart -->
-    <section class="chartbox">
-      <h2>Win probability</h2>
-      <canvas id="chart"></canvas>
-    </section>
+      <section class="panel game">
+        <h2 id="gameLabel"></h2>
+        <p class="gamehint" id="gameHint"></p>
+        <button id="gameBtn">Start</button>
+        <p class="gameresult" id="gameResult"></p>
+      </section>
 
-    <p class="footer">Simulated match. Timings are simple physics estimates.
-      Speed, length, shot direction and player numbers are made up.</p>
-  </main>
+      <section class="panel">
+        <div class="wptext" id="wp"></div>
+        <div class="wpbar"><div class="wpfill" id="wpFill"></div></div>
+        <div class="lbl sp">Win chance across the chase</div>
+        <svg id="spark" viewBox="0 0 300 80" preserveAspectRatio="none"></svg>
+      </section>
+    </div>
+  </div>
+  <p id="error" class="error"></p>
+</section>
+</main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <script src="match.js"></script>
-  <script src="commentary.js"></script>
-  <script src="app.js"></script>
+<footer class="wrap footer">Simulated match, highlights only, so the score and over tracker jump between deliveries. Speed, length and shot direction are made up. Timings assume constant ball speed in a straight line; real balls reach the batter a little sooner.</footer>
+
+<nav class="ctrl">
+  <button id="nextBtn">Next ball</button>
+  <button id="autoBtn">Auto-play</button>
+  <button id="resetBtn" class="light">Reset</button>
+</nav>
+<script src="match.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
