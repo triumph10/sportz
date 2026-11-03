@@ -18,3 +18,5 @@ site/.vercel/
 
 # Generated files
 *.log
+.vercel
+.env*
